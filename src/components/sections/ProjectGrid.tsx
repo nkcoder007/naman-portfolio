@@ -83,15 +83,15 @@ function ProjectCard({ project, position, onOpen }: ProjectCardProps) {
         )}
       </span>
 
-      <span className="mt-4 block text-lg font-semibold tracking-tight text-fg">
+      <span className="mt-4 block text-lg font-semibold tracking-tight text-fg text-pretty">
         {project.title}
       </span>
 
-      <span className="mt-2 block text-[14px] leading-6 text-fg-secondary line-clamp-3">
+      <span className="mt-2 block text-[14px] leading-6 text-fg-secondary text-pretty line-clamp-3">
         {project.summary}
       </span>
 
-      <span className="mt-4 flex min-h-5 flex-wrap gap-x-3 gap-y-1.5 font-mono text-[11px] text-fg-muted">
+      <span className="mt-4 flex min-h-5 flex-wrap gap-x-4 gap-y-1.5 font-mono text-[11px] text-fg-muted">
         {shownTechnologies.map((technology) => (
           <span key={technology} className="flex items-center gap-1.5">
             <span aria-hidden="true" className="size-1 bg-border-strong" />
@@ -104,7 +104,7 @@ function ProjectCard({ project, position, onOpen }: ProjectCardProps) {
   );
 
   return (
-    <article className="flex h-full flex-col border border-border bg-surface">
+    <article className="flex h-full flex-col border border-border bg-surface transition-colors duration-150 hover:border-border-strong">
       {project.featured ? <span aria-hidden="true" className="h-0.5 bg-accent" /> : null}
 
       {hasDetails ? (
@@ -117,7 +117,7 @@ function ProjectCard({ project, position, onOpen }: ProjectCardProps) {
           {header}
 
           <span className="-mx-5 mt-auto flex items-center justify-between gap-3 border-t border-border px-5 pt-3 font-mono text-[10.5px] tracking-[0.16em] uppercase">
-            <span className="text-fg-muted transition-colors group-hover:text-fg-secondary">
+            <span className="text-fg-muted transition-colors duration-150 group-hover:text-accent">
               details
             </span>
             <span

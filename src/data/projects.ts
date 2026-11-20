@@ -25,6 +25,11 @@ export type Project = {
   status?: string;
   /** Gives one card the larger treatment: accent rule and a featured label. */
   featured?: boolean;
+  /**
+   * Temporary fixture marker. Demo records are labelled as such in the UI and
+   * never render their placeholder URLs as working external links.
+   */
+  demo?: boolean;
 };
 
 /**
@@ -33,7 +38,9 @@ export type Project = {
  * The three DEMO PROJECT records below exist only so the card grid can be
  * inspected before real work is documented. Every value is invented: the copy
  * is placeholder text, and the links use the reserved `.invalid` domain, which
- * never resolves in any browser.
+ * never resolves in any browser. Each record is flagged `demo: true`, which
+ * makes the dialog list its links as inert placeholder text instead of real
+ * anchors.
  *
  * To restore the shipped state, replace the whole `entries` array with:
  *
@@ -45,6 +52,7 @@ export type Project = {
 const entries: readonly Project[] = [
   {
     id: "demo-project-01",
+    demo: true,
     title: "DEMO PROJECT 01",
     category: "Demo / Software Development",
     summary:
@@ -72,6 +80,7 @@ const entries: readonly Project[] = [
   },
   {
     id: "demo-project-02",
+    demo: true,
     title: "DEMO PROJECT 02",
     category: "Demo / Research",
     summary:
@@ -94,6 +103,7 @@ const entries: readonly Project[] = [
   },
   {
     id: "demo-project-03",
+    demo: true,
     title: "DEMO PROJECT 03",
     category: "Demo / Tooling",
     summary:

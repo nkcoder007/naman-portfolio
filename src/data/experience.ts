@@ -30,7 +30,10 @@ export type ExperienceEntry = {
   summary: string;
   skills?: readonly string[];
   details?: ExperienceDetails;
-  /** Gives a major entry more visual weight than the rest. */
+  /**
+   * Preserved emphasis flag. The explorer signals emphasis through the accent
+   * selection treatment, so this no longer changes type size or weight.
+   */
   featured?: boolean;
 };
 

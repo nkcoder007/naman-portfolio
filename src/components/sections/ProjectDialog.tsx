@@ -40,8 +40,15 @@ export function ProjectDialog({ project, returnFocusTo, onClose }: ProjectDialog
     const html = document.documentElement;
 
     // Lock the page without shifting it: hide the scrollbar and pad it out.
-    const previous = { overflow: body.style.overflow, paddingRight: body.style.paddingRight };
+    // Both the root and the body are locked so the viewport cannot scroll in
+    // any engine, not only where body overflow propagates to it.
+    const previous = {
+      bodyOverflow: body.style.overflow,
+      bodyPaddingRight: body.style.paddingRight,
+      htmlOverflow: html.style.overflow,
+    };
     const scrollbarWidth = window.innerWidth - html.clientWidth;
+    html.style.overflow = "hidden";
     body.style.overflow = "hidden";
     if (scrollbarWidth > 0) {
       const basePadding = Number.parseFloat(window.getComputedStyle(body).paddingRight) || 0;
@@ -100,8 +107,9 @@ export function ProjectDialog({ project, returnFocusTo, onClose }: ProjectDialog
     return () => {
       document.removeEventListener("keydown", onKeyDown, true);
       for (const element of inerted) element.removeAttribute("inert");
-      body.style.overflow = previous.overflow;
-      body.style.paddingRight = previous.paddingRight;
+      body.style.overflow = previous.bodyOverflow;
+      body.style.paddingRight = previous.bodyPaddingRight;
+      html.style.overflow = previous.htmlOverflow;
       if (returnFocusTo && document.contains(returnFocusTo)) {
         returnFocusTo.focus({ preventScroll: true });
       }
@@ -182,7 +190,7 @@ export function ProjectDialog({ project, returnFocusTo, onClose }: ProjectDialog
 
             <h3
               id={titleId}
-              className="mt-2 text-xl font-semibold tracking-tight text-fg sm:text-2xl"
+              className="mt-2 text-xl font-semibold tracking-tight text-fg text-pretty sm:text-2xl"
             >
               {project.title}
             </h3>
@@ -192,7 +200,7 @@ export function ProjectDialog({ project, returnFocusTo, onClose }: ProjectDialog
             type="button"
             onClick={requestClose}
             aria-label="Close project details"
-            className="group flex shrink-0 items-center gap-2 border border-border px-2.5 py-1.5 font-mono text-[10.5px] tracking-[0.16em] text-fg-secondary uppercase transition-colors hover:border-border-strong hover:text-fg"
+            className="group flex min-h-9 min-w-9 shrink-0 items-center justify-center gap-2 border border-border px-2.5 py-1.5 font-mono text-[10.5px] tracking-[0.16em] text-fg-secondary uppercase transition-colors duration-150 hover:border-border-strong hover:bg-hover hover:text-fg sm:justify-start"
           >
             <span aria-hidden="true" className="text-sm leading-none">
               &times;
@@ -204,14 +212,14 @@ export function ProjectDialog({ project, returnFocusTo, onClose }: ProjectDialog
           </button>
         </header>
 
-        <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain">
+        <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain [scrollbar-gutter:stable]">
           <div className="grid lg:grid-cols-[minmax(0,1fr)_18rem]">
-            <div className="px-4 py-6 sm:px-6 sm:py-7 lg:px-8">
+            <div className="px-4 py-6 sm:px-6 sm:py-7 lg:px-8 lg:py-8">
               {hasMain ? (
                 <div>
                   {project.overview ? (
                     <Group label="overview">
-                      <p className="max-w-[62ch] text-[14.5px] leading-7 text-fg-secondary">
+                      <p className="max-w-[60ch] text-[15px] leading-7 text-fg-secondary">
                         {project.overview}
                       </p>
                     </Group>
@@ -231,7 +239,7 @@ export function ProjectDialog({ project, returnFocusTo, onClose }: ProjectDialog
 
                   {project.details ? (
                     <Group label="implementation notes">
-                      <p className="max-w-[62ch] text-[14.5px] leading-7 text-fg-secondary">
+                      <p className="max-w-[60ch] text-[15px] leading-7 text-fg-secondary">
                         {project.details}
                       </p>
                     </Group>
@@ -239,7 +247,7 @@ export function ProjectDialog({ project, returnFocusTo, onClose }: ProjectDialog
                 </div>
               ) : (
                 <Group label="summary">
-                  <p className="max-w-[62ch] text-[14.5px] leading-7 text-fg-secondary">
+                  <p className="max-w-[60ch] text-[15px] leading-7 text-fg-secondary">
                     {project.summary}
                   </p>
                 </Group>
@@ -247,7 +255,7 @@ export function ProjectDialog({ project, returnFocusTo, onClose }: ProjectDialog
             </div>
 
             {hasAside ? (
-              <aside className="border-t border-border bg-bg-subtle px-4 py-6 sm:px-6 lg:border-t-0 lg:border-l lg:border-border lg:py-7">
+              <aside className="border-t border-border bg-bg-subtle px-4 py-6 sm:px-6 lg:border-t-0 lg:border-l lg:border-border lg:px-6 lg:py-8">
                 {project.role ? <Meta label="role">{project.role}</Meta> : null}
                 {project.timeframe ? <Meta label="timeframe">{project.timeframe}</Meta> : null}
 
@@ -266,12 +274,24 @@ export function ProjectDialog({ project, returnFocusTo, onClose }: ProjectDialog
 
                 {project.repositoryUrl || project.liveUrl ? (
                   <Meta label="links">
-                    <span className="flex flex-wrap gap-x-5 gap-y-2">
-                      {project.liveUrl ? <ExternalLink href={project.liveUrl}>Live</ExternalLink> : null}
-                      {project.repositoryUrl ? (
-                        <ExternalLink href={project.repositoryUrl}>Repository</ExternalLink>
-                      ) : null}
-                    </span>
+                    {project.demo ? (
+                      // Demo fixtures carry `.invalid` URLs: list them as inert
+                      // text so they never behave like working destinations.
+                      <span className="flex flex-wrap items-baseline gap-x-3 gap-y-1.5 font-mono text-[12px] text-fg-muted">
+                        {project.liveUrl ? <span>Live</span> : null}
+                        {project.repositoryUrl ? <span>Repository</span> : null}
+                        <span className="text-[11px]">placeholder links — not published</span>
+                      </span>
+                    ) : (
+                      <span className="flex flex-wrap gap-x-5 gap-y-2">
+                        {project.liveUrl ? (
+                          <ExternalLink href={project.liveUrl}>Live</ExternalLink>
+                        ) : null}
+                        {project.repositoryUrl ? (
+                          <ExternalLink href={project.repositoryUrl}>Repository</ExternalLink>
+                        ) : null}
+                      </span>
+                    )}
                   </Meta>
                 ) : null}
               </aside>
@@ -297,8 +317,8 @@ function BulletList({ items }: { items: readonly string[] }) {
   return (
     <ul className="space-y-2">
       {items.map((item) => (
-        <li key={item} className="flex gap-2.5 text-[14.5px] leading-6 text-fg-secondary">
-          <span aria-hidden="true" className="mt-2.5 size-1 shrink-0 bg-border-strong" />
+        <li key={item} className="flex gap-2.5 text-[15px] leading-7 text-fg-secondary">
+          <span aria-hidden="true" className="mt-3 size-1 shrink-0 bg-border-strong" />
           {item}
         </li>
       ))}
