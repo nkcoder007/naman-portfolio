@@ -1,26 +1,126 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+/* Theme switching is driven by <html data-theme>, not by the OS media query. */
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+
+  --color-bg: var(--bg);
+  --color-bg-subtle: var(--bg-subtle);
+  --color-surface: var(--surface);
+  --color-surface-raised: var(--surface-raised);
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
+  --color-fg: var(--fg);
+  --color-fg-secondary: var(--fg-secondary);
+  --color-fg-muted: var(--fg-muted);
+  --color-accent: var(--accent);
+  --color-accent-strong: var(--accent-strong);
+  --color-accent-contrast: var(--accent-contrast);
+  --color-hover: var(--hover);
+  --color-focus: var(--focus);
+  --color-syntax-orange: var(--syntax-orange);
+  --color-syntax-blue: var(--syntax-blue);
+  --color-syntax-teal: var(--syntax-teal);
+  --color-syntax-purple: var(--syntax-purple);
+  --color-syntax-pink: var(--syntax-pink);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+/* Dark theme (the default when no preference is stored). */
+:root {
+  color-scheme: dark;
+
+  --bg: #0e1217;
+  --bg-subtle: #11161d;
+  --surface: #161c25;
+  --surface-raised: #1c232e;
+  --border: #242c38;
+  --border-strong: #35404f;
+
+  --fg: #e6ebf2;
+  --fg-secondary: #b4becd;
+  --fg-muted: #8a94a6;
+
+  --accent: #7cb8ff;
+  --accent-strong: #a6ceff;
+  --accent-contrast: #07121f;
+  --hover: #1a212b;
+  --focus: #f0a868;
+  --selection: #22364f;
+  --selection-fg: #f1f5fb;
+
+  --syntax-orange: #f0a868;
+  --syntax-blue: #7cb8ff;
+  --syntax-teal: #5ccfc4;
+  --syntax-purple: #c1a5ff;
+  --syntax-pink: #f191b7;
+}
+
+[data-theme="light"] {
+  color-scheme: light;
+
+  --bg: #f6f7f9;
+  --bg-subtle: #eceff4;
+  --surface: #ffffff;
+  --surface-raised: #ffffff;
+  --border: #dde2ea;
+  --border-strong: #b7c0ce;
+
+  --fg: #10141b;
+  --fg-secondary: #3a4352;
+  --fg-muted: #5b6575;
+
+  --accent: #0a5fbe;
+  --accent-strong: #084a94;
+  --accent-contrast: #ffffff;
+  --hover: #e9edf3;
+  --focus: #9a4d0c;
+  --selection: #cfe1f6;
+  --selection-fg: #0b1220;
+
+  --syntax-orange: #9a4d0c;
+  --syntax-blue: #0a5fbe;
+  --syntax-teal: #0c6b64;
+  --syntax-purple: #5f2fb4;
+  --syntax-pink: #9c1f5b;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
   }
-}
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
+  body {
+    background-color: var(--bg);
+    color: var(--fg);
+    font-family: var(--font-geist-sans), system-ui, "Helvetica Neue", Arial, sans-serif;
+  }
+
+  ::selection {
+    background-color: var(--selection);
+    color: var(--selection-fg);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 2px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
 }

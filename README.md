@@ -27,7 +27,7 @@ available port (for example http://localhost:3001) and prints the chosen URL in 
 ```
 src/
   app/          layout, page and global styles (App Router)
-  components/   navigation, sections, ui, animations
+  components/   navigation, sections, theme, ui, animations
   data/         content and content types
   lib/          shared helpers
 public/

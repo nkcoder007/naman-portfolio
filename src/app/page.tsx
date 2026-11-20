@@ -1,37 +1,67 @@
+import { SectionShell } from "@/components/sections/SectionShell";
+import { Container } from "@/components/ui/Container";
+import { site } from "@/data/site";
+
 export default function Home() {
   return (
-    <main className="flex flex-1 flex-col items-center justify-center gap-6 px-6 py-24 text-center">
-      <p className="rounded-full border border-black/10 px-3 py-1 text-xs font-medium tracking-widest uppercase text-zinc-500 dark:border-white/15 dark:text-zinc-400">
-        Setup complete
-      </p>
+    <main id="main" className="flex-1">
+      <section
+        id="hero"
+        data-section
+        data-scene
+        aria-labelledby="hero-heading"
+        className="relative flex min-h-svh scroll-mt-16 flex-col justify-center border-b border-border"
+      >
+        <Container className="py-24 sm:py-32 lg:py-40">
+          <p className="flex items-center gap-3 font-mono text-[11px] tracking-[0.22em] uppercase">
+            <span className="text-accent">00</span>
+            <span className="text-border-strong">/</span>
+            <span className="text-fg-muted">{site.role}</span>
+          </p>
 
-      <h1 className="max-w-2xl text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
-        Naman&apos;s portfolio is up and running
-      </h1>
+          <h1
+            id="hero-heading"
+            className="mt-6 max-w-3xl text-4xl font-semibold tracking-tight text-balance text-fg sm:text-5xl lg:text-6xl"
+          >
+            {site.name}
+          </h1>
 
-      <p className="max-w-md text-base leading-7 text-zinc-600 dark:text-zinc-400">
-        This is a temporary homepage that confirms the Next.js application, TypeScript and
-        Tailwind CSS are wired up correctly. The portfolio design is built in the next phase.
-      </p>
+          <p className="mt-6 max-w-xl text-base leading-7 text-fg-secondary">
+            The design foundation is in place: layout, typography and a two-theme system. Detailed
+            sections are built in the next phase.
+          </p>
+        </Container>
+      </section>
 
-      <dl className="grid grid-cols-1 gap-x-10 gap-y-3 rounded-xl border border-black/10 p-6 text-left text-sm sm:grid-cols-2 dark:border-white/15">
-        <div>
-          <dt className="text-zinc-500 dark:text-zinc-400">Framework</dt>
-          <dd className="font-medium">Next.js (App Router)</dd>
-        </div>
-        <div>
-          <dt className="text-zinc-500 dark:text-zinc-400">Language</dt>
-          <dd className="font-medium">TypeScript (strict)</dd>
-        </div>
-        <div>
-          <dt className="text-zinc-500 dark:text-zinc-400">Styling</dt>
-          <dd className="font-medium">Tailwind CSS</dd>
-        </div>
-        <div>
-          <dt className="text-zinc-500 dark:text-zinc-400">Linting</dt>
-          <dd className="font-medium">ESLint</dd>
-        </div>
-      </dl>
+      <SectionShell id="about" index="01" title="About Me" width="content">
+        <p className="max-w-xl text-sm leading-7 text-fg-secondary sm:text-base">
+          A short introduction, background and the way I work will be developed here.
+        </p>
+      </SectionShell>
+
+      <SectionShell id="experience" index="02" title="Experience" width="wide">
+        <p className="max-w-xl text-sm leading-7 text-fg-secondary sm:text-base">
+          Roles, timelines and the technical work behind them will be laid out here.
+        </p>
+      </SectionShell>
+
+      <SectionShell id="projects" index="03" title="Projects" width="wide">
+        <p className="max-w-xl text-sm leading-7 text-fg-secondary sm:text-base">
+          Selected projects, their stack and outcomes will be documented here.
+        </p>
+      </SectionShell>
+
+      <SectionShell id="personality" index="04" title="Personality" width="content">
+        <p className="max-w-xl text-sm leading-7 text-fg-secondary sm:text-base">
+          Interests, side projects and the things that shape how I build will live here.
+        </p>
+      </SectionShell>
+
+      <SectionShell id="contact" index="05" title="Contact" width="content">
+        <p className="max-w-xl text-sm leading-7 text-fg-secondary sm:text-base">
+          Ways to get in touch will be listed here.
+        </p>
+      </SectionShell>
     </main>
   );
 }
