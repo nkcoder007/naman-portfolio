@@ -22,7 +22,7 @@ export function ProjectGrid({ items }: ProjectGridProps) {
     <>
       <ul className="mt-9 grid gap-4 sm:mt-11 sm:gap-5 md:grid-cols-2 lg:grid-cols-3 lg:gap-6">
         {items.map((project, index) => (
-          <li key={project.id}>
+          <li key={project.id} data-reveal-item data-reveal-step={index}>
             <ProjectCard
               project={project}
               position={index + 1}

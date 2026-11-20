@@ -59,6 +59,8 @@ export function Contact() {
         <div className={`mt-[clamp(4rem,19svh,15rem)] text-center ${composition}`}>
           <h2
             id="contact-heading"
+            data-reveal-item
+            data-reveal-step="0"
             className="font-mono text-[2rem] leading-[1.02] font-semibold tracking-[-0.025em] text-fg sm:text-[3.5rem] lg:text-[5rem] xl:text-[5.5rem]"
           >
             {contact.headline.map((line) => (
@@ -74,6 +76,8 @@ export function Contact() {
             type="button"
             aria-expanded={open}
             aria-controls="contact-panel"
+            data-reveal-item
+            data-reveal-step="1"
             onClick={() => setOpen((value) => !value)}
             className="group mt-10 inline-flex min-h-12 items-center gap-3 bg-accent px-6 font-mono text-[11px] tracking-[0.18em] text-accent-contrast uppercase transition-colors duration-150 hover:bg-accent-strong focus-visible:outline-offset-4 sm:mt-12 sm:min-h-13 sm:px-7 sm:text-[12px]"
           >

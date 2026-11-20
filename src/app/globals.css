@@ -188,7 +188,7 @@
    being touched again:
 
      1  .page-backdrop           fixed, z-index: -2  base colour + grid texture
-     2  (reserved) mascot layer  fixed, z-index: -1  not implemented yet
+     2  mascot layer             fixed, z-index: -1  components/mascot
      3  solid section surfaces   in flow             About, Experience,
                                                      Personality and the footer
                                                      (opaque bg-bg)
@@ -198,11 +198,11 @@
      5  navigation and overlays  z-index 50 (header), 60 (skip link),
                                  80 (project and personality dialogs)
 
-   A future mascot is a direct child of <body>: `position: fixed; inset: 0;
+   The mascot is a direct child of <body>: `position: fixed; inset: 0;
    z-index: -1; pointer-events: none`. Negative layers paint above the root
-   background and below every in-flow block, so the mascot would be visible in
-   the transparent sections, painted over by the solid ones, and never above
-   text. Nothing between <body> and the sections may create a stacking context
+   background and below every in-flow block, so it shows through the transparent
+   sections, is painted over by the solid ones, and never sits above text.
+   Nothing between <body> and the sections may create a stacking context
    (isolation, transform, filter, opacity < 1) or the negative layers would be
    trapped and this ordering would no longer hold. */
 
@@ -219,6 +219,68 @@
     linear-gradient(to right, var(--grid-line) 1px, transparent 1px),
     linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px);
   background-size: var(--grid-size) var(--grid-size);
+}
+
+/* Section entrance. Hiding only ever comes from the head gate or from the
+   attributes RevealController writes, so a visit without JavaScript renders in
+   full. Each staged element transitions to its own natural state, which also
+   means a transition that never runs lands on the finished state rather than
+   leaving the content behind an unfinished animation. */
+[data-reveal-item] {
+  transition:
+    opacity 650ms cubic-bezier(0.22, 0.61, 0.36, 1),
+    transform 650ms cubic-bezier(0.22, 0.61, 0.36, 1);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+
+html[data-reveal="pending"] [data-reveal-item],
+[data-reveal-state="queued"] {
+  opacity: 0;
+  transform: translateY(18px);
+}
+
+/* Reduced motion: everything is present from the start, with no entrance. */
+@media (prefers-reduced-motion: reduce) {
+  html[data-reveal="pending"] [data-reveal-item],
+  [data-reveal-state] {
+    opacity: 1;
+    transform: none;
+    transition: none !important;
+    animation: none !important;
+  }
+}
+
+/* Touch devices: the mascot drifts on its own around its resting position.
+   Desktop tracking is scripted (components/mascot/Mascot.tsx), because it has to
+   follow the pointer; this closed loop is the only movement a coarse pointer
+   needs, and it starts and ends at zero so it repeats without a jump. */
+@keyframes mascot-drift {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+  25% {
+    transform: translate3d(-9px, -13px, 0);
+  }
+  50% {
+    transform: translate3d(-15px, 4px, 0);
+  }
+  75% {
+    transform: translate3d(-3px, 14px, 0);
+  }
+}
+
+@media (hover: none), (pointer: coarse) {
+  .mascot-drift {
+    animation: mascot-drift 26s ease-in-out infinite;
+  }
+}
+
+/* Reduced motion keeps the mascot, stationary, exactly where CSS places it. */
+@media (prefers-reduced-motion: reduce) {
+  .mascot-drift {
+    animation: none !important;
+  }
 }
 
 /* Reduced motion: the conveyor stops and becomes a static strip that scrolls

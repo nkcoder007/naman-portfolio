@@ -77,7 +77,7 @@ export function Experience() {
       surface="solid"
     >
       <div className={`mt-2 ${compositionWidth}`}>
-        <div className={`grid gap-y-3 ${columns}`}>
+        <div data-reveal-item data-reveal-step="0" className={`grid gap-y-3 ${columns}`}>
           <p className="font-mono text-[11px] tracking-[0.18em] text-fg-muted uppercase md:pt-1.5">
             {entries.length} entries
           </p>
@@ -91,6 +91,8 @@ export function Experience() {
             role="tablist"
             aria-label="Experience entries"
             aria-orientation="vertical"
+            data-reveal-item
+            data-reveal-step="0"
             className="md:border-r md:border-border"
           >
             {entries.map((entry, index) => {
@@ -136,7 +138,7 @@ export function Experience() {
 
           {/* One shared cell: the panel takes the height of the tallest entry, so
               switching never moves the composition or re-centres the section. */}
-          <div className="grid">
+          <div data-reveal-item data-reveal-step="1" className="grid">
             {entries.map((entry, index) => {
               const selected = index === activeIndex;
 

@@ -69,6 +69,7 @@ export function Hero() {
       data-section
       data-scene
       data-surface="grid"
+      data-reveal-immediate
       aria-labelledby="hero-heading"
       className="relative flex min-h-svh scroll-mt-16 flex-col justify-center border-b border-border"
     >
@@ -77,12 +78,17 @@ export function Hero() {
           <div>
             <h1
               id="hero-heading"
+              data-reveal-item
+              data-reveal-step="0"
               className="font-mono text-[2.25rem] leading-[1.04] font-semibold tracking-tight text-balance text-fg sm:text-6xl xl:text-7xl"
             >
               Hey, I&apos;m Naman!
             </h1>
 
-            <p className="mt-6 flex flex-col gap-y-1 font-mono text-[12.5px] sm:flex-row sm:flex-wrap sm:items-center sm:gap-x-3 sm:text-[13px]">
+            <p
+              data-reveal-item
+              data-reveal-step="1"
+              className="mt-6 flex flex-col gap-y-1 font-mono text-[12.5px] sm:flex-row sm:flex-wrap sm:items-center sm:gap-x-3 sm:text-[13px]">
               <span className="text-fg-secondary">{profile.school}</span>
               <span aria-hidden="true" className="hidden text-border-strong sm:inline">
                 ·
@@ -90,7 +96,11 @@ export function Hero() {
               <span className="text-fg-muted">class of {profile.graduationYear} (expected)</span>
             </p>
 
-            <p className="mt-7 max-w-xl text-lg leading-8 text-fg-secondary sm:mt-8 sm:text-xl sm:leading-9">
+            <p
+              data-reveal-item
+              data-reveal-step="1"
+              className="mt-7 max-w-xl text-lg leading-8 text-fg-secondary sm:mt-8 sm:text-xl sm:leading-9"
+            >
               {hero.intro}
             </p>
           </div>
@@ -106,6 +116,8 @@ function EditorPanel() {
   return (
     <aside
       aria-label="Profile as a TypeScript snippet"
+      data-reveal-item
+      data-reveal-step="2"
       className="w-full border border-border bg-surface"
     >
       <div className="flex items-end border-b border-border bg-bg-subtle pt-2 pl-2">

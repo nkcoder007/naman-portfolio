@@ -1,9 +1,12 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 
+import { Mascot } from "@/components/mascot/Mascot";
 import { SiteFooter } from "@/components/navigation/SiteFooter";
 import { SiteHeader } from "@/components/navigation/SiteHeader";
+import { RevealController } from "@/components/reveal/RevealController";
 import { site } from "@/data/site";
+import { revealInitScript } from "@/lib/reveal";
 import { themeInitScript } from "@/lib/theme";
 
 import "./globals.css";
@@ -35,10 +38,13 @@ export default function RootLayout({
     >
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
+        <script dangerouslySetInnerHTML={{ __html: revealInitScript }} />
       </head>
       <body className="flex min-h-dvh flex-col text-fg">
-        {/* Persistent background. See the layering plan in globals.css. */}
+        {/* Persistent background and mascot layer. See the layering plan in globals.css. */}
         <div aria-hidden="true" className="page-backdrop" />
+        <Mascot />
+        <RevealController />
 
         <a
           href="#main"

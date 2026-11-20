@@ -40,7 +40,7 @@ export function Personality() {
 
   return (
     <SectionShell id="personality" title="Personality" width="wide" surface="solid">
-      <div className="mt-2">
+      <div data-reveal-item data-reveal-step="0" className="mt-2">
         <div className={`grid gap-y-3 ${metaColumns}`}>
           <p className="font-mono text-[11px] tracking-[0.18em] text-fg-muted uppercase md:pt-1.5">
             {interestCount} interests
@@ -51,7 +51,11 @@ export function Personality() {
         </div>
       </div>
 
-      <div className="mt-9 space-y-5 sm:mt-11 sm:space-y-7 lg:space-y-8">
+      <div
+        data-reveal-item
+        data-reveal-step="1"
+        className="mt-9 space-y-5 sm:mt-11 sm:space-y-7 lg:space-y-8"
+      >
         <ConveyorRow
           entries={personality.entries}
           direction="left"
@@ -68,7 +72,7 @@ export function Personality() {
         />
       </div>
 
-      <div className={`mt-8 grid ${metaColumns}`}>
+      <div data-reveal-item data-reveal-step="2" className={`mt-8 grid ${metaColumns}`}>
         <p className="hidden font-mono text-[11px] tracking-[0.18em] text-fg-muted uppercase md:block">
           note
         </p>

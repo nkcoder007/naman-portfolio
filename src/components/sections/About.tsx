@@ -25,7 +25,11 @@ export function About() {
       <div
         className={`mx-auto mt-2 grid ${compositionWidth} gap-10 md:grid-cols-[17rem_minmax(0,1fr)] md:gap-12 lg:grid-cols-[minmax(0,25rem)_minmax(0,1fr)] lg:items-center lg:gap-14 xl:grid-cols-[minmax(0,27rem)_minmax(0,1fr)]`}
       >
-        <figure className="mx-auto w-full max-w-[22rem] border border-border bg-surface md:mx-0 md:max-w-none">
+        <figure
+          data-reveal-item
+          data-reveal-step="0"
+          className="mx-auto w-full max-w-[22rem] border border-border bg-surface md:mx-0 md:max-w-none"
+        >
           <figcaption className="flex items-center justify-between gap-3 border-b border-border bg-bg-subtle px-3.5 py-2">
             <span className="flex items-center gap-2 font-mono text-xs text-fg-secondary">
               <span aria-hidden="true" className="size-1.5 shrink-0 bg-syntax-teal" />
@@ -99,7 +103,7 @@ export function About() {
           </div>
         </figure>
 
-        <div className="max-w-[38rem]">
+        <div data-reveal-item data-reveal-step="1" className="max-w-[38rem]">
           <div className="space-y-5 text-[15px] leading-7 text-fg-secondary sm:text-base sm:leading-8 lg:text-[17px] lg:leading-[1.75]">
             {about.paragraphs.map((paragraph) => (
               <p key={paragraph}>{paragraph}</p>
