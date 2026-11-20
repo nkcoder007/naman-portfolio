@@ -7,10 +7,18 @@ type SectionShellProps = {
   index: string;
   title: string;
   width?: ContentWidth;
+  headingClassName?: string;
   children?: ReactNode;
 };
 
-export function SectionShell({ id, index, title, width = "content", children }: SectionShellProps) {
+export function SectionShell({
+  id,
+  index,
+  title,
+  width = "content",
+  headingClassName,
+  children,
+}: SectionShellProps) {
   const headingId = `${id}-heading`;
 
   return (
@@ -24,17 +32,19 @@ export function SectionShell({ id, index, title, width = "content", children }: 
       <Container width={width} className="py-20 sm:py-24 lg:py-28">
         <p
           aria-hidden="true"
-          className="flex items-center gap-3 font-mono text-[11px] uppercase tracking-[0.22em]"
+          className="flex items-center gap-3 font-mono text-xs uppercase tracking-[0.22em]"
         >
           <span className="text-accent">{index}</span>
           <span className="text-border-strong">/</span>
-          <span className="text-fg-muted">{id}</span>
+          <span className="text-fg-secondary">{id}</span>
           <span className="ml-1 h-px flex-1 bg-border" />
         </p>
 
         <h2
           id={headingId}
-          className="mt-5 text-2xl font-semibold tracking-tight text-fg sm:text-3xl"
+          className={["mt-6 text-2xl font-semibold tracking-tight text-fg sm:text-3xl", headingClassName]
+            .filter(Boolean)
+            .join(" ")}
         >
           {title}
         </h2>

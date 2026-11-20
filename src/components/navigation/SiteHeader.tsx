@@ -64,7 +64,7 @@ export function SiteHeader() {
       <div className="mx-auto flex h-14 w-full max-w-[88rem] items-center gap-4 px-5 sm:px-8 lg:px-12">
         <a
           href="#top"
-          className="flex shrink-0 items-center gap-2.5 text-sm font-semibold tracking-tight text-fg"
+          className="flex shrink-0 items-center gap-2.5 text-[15px] font-semibold tracking-tight text-fg"
         >
           <span aria-hidden="true" className="size-1.5 shrink-0 bg-accent" />
           {site.name}
@@ -81,15 +81,15 @@ export function SiteHeader() {
                     href={`#${item.id}`}
                     aria-current={isActive ? "true" : undefined}
                     className={[
-                      "relative flex items-center gap-2 px-3.5 font-mono text-[12px] tracking-wide transition-colors",
+                      "relative flex items-center gap-2 px-3.5 font-mono text-[13px] tracking-wide transition-colors",
                       isActive
                         ? "bg-surface text-fg after:absolute after:inset-x-0 after:top-0 after:h-0.5 after:bg-accent"
-                        : "text-fg-muted hover:bg-surface hover:text-fg",
+                        : "text-fg-secondary hover:bg-surface hover:text-fg",
                     ].join(" ")}
                   >
                     <span
                       aria-hidden="true"
-                      className={isActive ? "text-[10px] text-accent" : "text-[10px] text-fg-muted"}
+                      className={isActive ? "text-[11px] text-accent" : "text-[11px] text-fg-muted"}
                     >
                       {String(position + 1).padStart(2, "0")}
                     </span>
@@ -104,7 +104,7 @@ export function SiteHeader() {
         <div className="hidden items-center gap-2 lg:flex">
           <a
             href={`#${contactNavigation.id}`}
-            className="border border-border px-3 py-1.5 font-mono text-[12px] text-fg-secondary transition-colors hover:border-accent hover:text-accent"
+            className="border border-border px-3 py-1.5 font-mono text-[13px] text-fg-secondary transition-colors hover:border-accent hover:text-accent"
           >
             {contactNavigation.label}
           </a>
@@ -146,12 +146,12 @@ export function SiteHeader() {
                     onClick={() => setMenuOpen(false)}
                     aria-current={isActive ? "true" : undefined}
                     className={[
-                      "flex min-h-12 items-center justify-between gap-4 py-3 text-sm transition-colors",
+                      "flex min-h-12 items-center justify-between gap-4 py-3 text-[15px] transition-colors",
                       isActive ? "text-accent" : "text-fg-secondary hover:text-fg",
                     ].join(" ")}
                   >
                     <span>{item.label}</span>
-                    <span aria-hidden="true" className="font-mono text-[11px] text-fg-muted">
+                    <span aria-hidden="true" className="font-mono text-xs text-fg-muted">
                       {index}
                     </span>
                   </a>
