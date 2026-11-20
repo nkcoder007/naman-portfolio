@@ -1,5 +1,24 @@
 export type ExperienceTone = "research" | "certification" | "teaching";
 
+/**
+ * Optional detail shown for the selected entry in the experience explorer.
+ * Every field is optional: anything that is not verified is left out rather
+ * than filled in.
+ */
+export type ExperienceDetails = {
+  responsibilities?: readonly string[];
+  contributions?: readonly string[];
+  /** Weekly or overall commitment, only when it is known. */
+  timeCommitment?: string;
+  /** Start and end dates or timeframe, only when they are verified. */
+  dates?: string;
+  outcomes?: readonly string[];
+  /** Heading for the outcomes list, e.g. the kind of recognition. */
+  outcomeLabel?: string;
+  /** Detail that is still unconfirmed, shown so it is easy to fill in later. */
+  pendingDetails?: string;
+};
+
 export type ExperienceEntry = {
   id: string;
   title: string;
@@ -10,12 +29,7 @@ export type ExperienceEntry = {
   period?: string;
   summary: string;
   skills?: readonly string[];
-  outcome?: {
-    label: string;
-    text: string;
-    /** Detail that is still unconfirmed, shown so it is easy to fill in later. */
-    pendingDetails?: string;
-  };
+  details?: ExperienceDetails;
   /** Gives a major entry more visual weight than the rest. */
   featured?: boolean;
 };
@@ -29,9 +43,13 @@ const entries: readonly ExperienceEntry[] = [
     summary:
       "Research on quantum error correction, with machine-learning algorithms applied as part of the work.",
     skills: ["Quantum error correction", "Machine learning"],
-    outcome: {
-      label: "Recognition",
-      text: "Presented as a poster at a research conference, where the poster received recognition and won an award.",
+    details: {
+      contributions: [
+        "Applied machine-learning algorithms as part of the quantum error correction research.",
+        "Presented the research as a poster at a research conference.",
+      ],
+      outcomes: ["The poster received recognition and won an award at the conference."],
+      outcomeLabel: "Recognition",
       pendingDetails: "conference name, award title, date — to be added",
     },
     featured: true,
@@ -54,6 +72,9 @@ const entries: readonly ExperienceEntry[] = [
     summary:
       "Academic tutoring involvement, working through coursework with other students.",
     skills: ["Teaching", "Communication"],
+    details: {
+      responsibilities: ["Working through coursework with other students."],
+    },
   },
 ];
 
