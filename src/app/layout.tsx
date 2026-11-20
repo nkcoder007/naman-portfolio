@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 
+import { SiteFooter } from "@/components/navigation/SiteFooter";
 import { SiteHeader } from "@/components/navigation/SiteHeader";
-import { Container } from "@/components/ui/Container";
 import { site } from "@/data/site";
 import { themeInitScript } from "@/lib/theme";
 
@@ -48,16 +48,7 @@ export default function RootLayout({
 
         {children}
 
-        <footer className="border-t border-border">
-          <Container className="flex flex-col gap-1.5 py-6 sm:flex-row sm:items-center sm:justify-between">
-            <p className="font-mono text-[11px] tracking-[0.18em] text-fg-muted uppercase">
-              {site.name}
-            </p>
-            <p className="font-mono text-[11px] tracking-[0.18em] text-fg-muted uppercase">
-              Next.js · React · TypeScript · Tailwind CSS
-            </p>
-          </Container>
-        </footer>
+        <SiteFooter />
       </body>
     </html>
   );
