@@ -56,6 +56,11 @@
   --syntax-teal: #5ccfc4;
   --syntax-purple: #c1a5ff;
   --syntax-pink: #f191b7;
+
+  /* Persistent background grid: one spacing for the whole document, and lines
+     light enough to read as texture rather than structure. */
+  --grid-size: 3rem;
+  --grid-line: rgb(232 238 247 / 0.06);
 }
 
 [data-theme="light"] {
@@ -85,6 +90,8 @@
   --syntax-teal: #0c6b64;
   --syntax-purple: #5f2fb4;
   --syntax-pink: #9c1f5b;
+
+  --grid-line: rgb(16 20 27 / 0.05);
 }
 
 /* Detail surfaces (project dialog, personality overlay): entrance only — the
@@ -138,8 +145,14 @@
     -webkit-text-size-adjust: 100%;
   }
 
-  body {
+  /* The base colour lives on the root element, below the negative layers, so the
+     backdrop (and a future mascot) can sit above it. The body itself must stay
+     transparent or its background would cover those layers. */
+  html {
     background-color: var(--bg);
+  }
+
+  body {
     color: var(--fg);
     font-family: var(--font-geist-sans), system-ui, "Helvetica Neue", Arial, sans-serif;
   }
@@ -168,6 +181,44 @@
       scroll-behavior: auto !important;
     }
   }
+}
+
+/* Layering plan. The page is painted in one fixed, documented order so a future
+   mascot can live between the background and the content without the sections
+   being touched again:
+
+     1  .page-backdrop           fixed, z-index: -2  base colour + grid texture
+     2  (reserved) mascot layer  fixed, z-index: -1  not implemented yet
+     3  solid section surfaces   in flow             About, Experience,
+                                                     Personality and the footer
+                                                     (opaque bg-bg)
+     4  section content          in flow             Hero, Projects, Contact:
+                                                     transparent, text paints
+                                                     above layer 2
+     5  navigation and overlays  z-index 50 (header), 60 (skip link),
+                                 80 (project and personality dialogs)
+
+   A future mascot is a direct child of <body>: `position: fixed; inset: 0;
+   z-index: -1; pointer-events: none`. Negative layers paint above the root
+   background and below every in-flow block, so the mascot would be visible in
+   the transparent sections, painted over by the solid ones, and never above
+   text. Nothing between <body> and the sections may create a stacking context
+   (isolation, transform, filter, opacity < 1) or the negative layers would be
+   trapped and this ordering would no longer hold. */
+
+/* The single persistent background for the document: it is fixed to the
+   viewport, so the grid never restarts at a section boundary and never shifts
+   while scrolling. */
+.page-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  pointer-events: none;
+  background-color: var(--bg);
+  background-image:
+    linear-gradient(to right, var(--grid-line) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px);
+  background-size: var(--grid-size) var(--grid-size);
 }
 
 /* Reduced motion: the conveyor stops and becomes a static strip that scrolls

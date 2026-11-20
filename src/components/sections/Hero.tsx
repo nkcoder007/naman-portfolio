@@ -68,21 +68,16 @@ export function Hero() {
       id="hero"
       data-section
       data-scene
+      data-surface="grid"
       aria-labelledby="hero-heading"
       className="relative flex min-h-svh scroll-mt-16 flex-col justify-center border-b border-border"
     >
       <Container className="py-16 sm:py-24 lg:py-28">
         <div className="grid gap-10 lg:grid-cols-[minmax(0,7fr)_minmax(0,5fr)] lg:items-center lg:gap-8 xl:gap-14">
           <div>
-            <p className="flex items-center gap-3 font-mono text-xs tracking-[0.22em] uppercase">
-              <span className="text-accent">00</span>
-              <span className="text-border-strong">/</span>
-              <span className="text-fg-secondary">intro</span>
-            </p>
-
             <h1
               id="hero-heading"
-              className="mt-6 text-[2.75rem] leading-[1.04] font-semibold tracking-tight text-balance text-fg sm:text-6xl xl:text-7xl"
+              className="font-mono text-[2.25rem] leading-[1.04] font-semibold tracking-tight text-balance text-fg sm:text-6xl xl:text-7xl"
             >
               Hey, I&apos;m Naman!
             </h1>

@@ -45,6 +45,7 @@ export function Contact() {
       id="contact"
       data-section
       data-scene
+      data-surface="grid"
       aria-labelledby="contact-heading"
       className="relative flex min-h-svh scroll-mt-16 flex-col border-b border-border"
     >
@@ -52,24 +53,13 @@ export function Contact() {
         width="wide"
         className="flex flex-1 flex-col pt-16 pb-20 sm:pt-20 sm:pb-24 lg:pt-24 lg:pb-28"
       >
-        {/* Section identifier: the one element that stays on the page's edge. */}
-        <p
-          aria-hidden="true"
-          className="flex items-center gap-3 font-mono text-xs tracking-[0.22em] uppercase"
-        >
-          <span className="text-accent">05</span>
-          <span className="text-border-strong">/</span>
-          <span className="text-fg-secondary">contact</span>
-          <span className="ml-1 h-px flex-1 bg-border" />
-        </p>
-
         {/* The scene is placed by its own top offset rather than centred on its
             own height, so revealing the panel grows the section downward
             without moving the statement the visitor is reading. */}
         <div className={`mt-[clamp(4rem,19svh,15rem)] text-center ${composition}`}>
           <h2
             id="contact-heading"
-            className="text-[2.25rem] leading-[1.02] font-semibold tracking-[-0.025em] text-fg sm:text-[3.5rem] lg:text-[5rem] xl:text-[5.5rem]"
+            className="font-mono text-[2rem] leading-[1.02] font-semibold tracking-[-0.025em] text-fg sm:text-[3.5rem] lg:text-[5rem] xl:text-[5.5rem]"
           >
             {contact.headline.map((line) => (
               <span key={line} className="block">

@@ -71,10 +71,10 @@ export function Experience() {
   return (
     <SectionShell
       id="experience"
-      index="02"
       title="Experience"
       width="wide"
       headingClassName={compositionWidth}
+      surface="solid"
     >
       <div className={`mt-2 ${compositionWidth}`}>
         <div className={`grid gap-y-3 ${columns}`}>

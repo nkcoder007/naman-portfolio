@@ -36,7 +36,10 @@ export default function RootLayout({
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
       </head>
-      <body className="flex min-h-dvh flex-col bg-bg text-fg">
+      <body className="flex min-h-dvh flex-col text-fg">
+        {/* Persistent background. See the layering plan in globals.css. */}
+        <div aria-hidden="true" className="page-backdrop" />
+
         <a
           href="#main"
           className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[60] focus:border focus:border-accent focus:bg-bg focus:px-3 focus:py-2 focus:font-mono focus:text-xs focus:text-fg"

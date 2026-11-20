@@ -17,10 +17,10 @@ export function About() {
   return (
     <SectionShell
       id="about"
-      index="01"
       title="About Me"
       width="wide"
       headingClassName={`mx-auto ${compositionWidth}`}
+      surface="solid"
     >
       <div
         className={`mx-auto mt-2 grid ${compositionWidth} gap-10 md:grid-cols-[17rem_minmax(0,1fr)] md:gap-12 lg:grid-cols-[minmax(0,25rem)_minmax(0,1fr)] lg:items-center lg:gap-14 xl:grid-cols-[minmax(0,27rem)_minmax(0,1fr)]`}

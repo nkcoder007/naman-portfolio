@@ -13,7 +13,6 @@ export function Projects() {
   return (
     <SectionShell
       id="projects"
-      index="03"
       title="Projects"
       width="wide"
       headingClassName={compositionWidth}
