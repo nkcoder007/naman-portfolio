@@ -60,7 +60,7 @@
   /* Persistent background grid: one spacing for the whole document, and lines
      light enough to read as texture rather than structure. */
   --grid-size: 3rem;
-  --grid-line: rgb(232 238 247 / 0.06);
+  --grid-line: rgb(232 238 247 / 0.085);
 }
 
 [data-theme="light"] {
@@ -91,7 +91,7 @@
   --syntax-purple: #5f2fb4;
   --syntax-pink: #9c1f5b;
 
-  --grid-line: rgb(16 20 27 / 0.05);
+  --grid-line: rgb(16 20 27 / 0.075);
 }
 
 /* Detail surfaces (project dialog, personality overlay): entrance only — the

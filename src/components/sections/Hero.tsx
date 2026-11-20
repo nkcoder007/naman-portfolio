@@ -105,7 +105,12 @@ export function Hero() {
             </p>
           </div>
 
-          <EditorPanel />
+          {/* Depth only: the panel drifts slightly slower than the page. The
+              wrapper carries the parallax transform, so the panel keeps its own
+              entrance transition untouched. */}
+          <div data-parallax="0.05">
+            <EditorPanel />
+          </div>
         </div>
       </Container>
     </section>

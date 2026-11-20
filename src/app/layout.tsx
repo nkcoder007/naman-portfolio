@@ -4,6 +4,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import { Mascot } from "@/components/mascot/Mascot";
 import { SiteFooter } from "@/components/navigation/SiteFooter";
 import { SiteHeader } from "@/components/navigation/SiteHeader";
+import { ScrollParallax } from "@/components/parallax/ScrollParallax";
 import { RevealController } from "@/components/reveal/RevealController";
 import { site } from "@/data/site";
 import { revealInitScript } from "@/lib/reveal";
@@ -45,6 +46,7 @@ export default function RootLayout({
         <div aria-hidden="true" className="page-backdrop" />
         <Mascot />
         <RevealController />
+        <ScrollParallax />
 
         <a
           href="#main"

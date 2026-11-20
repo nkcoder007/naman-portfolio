@@ -20,13 +20,24 @@ const EASE_MS = 300;
 const SETTLED_PX = 0.4;
 
 /**
+ * Offset at mid-document, as a delta from the resting position. Small on purpose:
+ * it should read as the mascot lagging the page, not travelling with it.
+ */
+const SCROLL_RISE = 22;
+
+/** Coarse pointers already have the CSS drift, so their share is smaller. */
+const SCROLL_RISE_COARSE = 10;
+
+/**
  * The persistent mascot: a decorative layer behind the page content, above the
  * grid backdrop (see the layering plan in globals.css).
  *
  * Desktop follows the cursor with easing; touch devices drift on their own with
- * a CSS animation, so no pointer work is done there. Everything is written
- * straight to the element's transform — no React state, no re-renders — and the
- * animation frame only runs while the mascot is still moving.
+ * a CSS animation, so no pointer work is done there. Scroll adds a small
+ * vertical delta to the same target, so cursor and scroll are one movement by
+ * one easing loop. Everything is written straight to the element's transform —
+ * no React state, no re-renders — and the animation frame only runs while the
+ * mascot is still moving.
  */
 export function Mascot() {
   const anchorRef = useRef<HTMLDivElement>(null);
@@ -46,6 +57,9 @@ export function Mascot() {
     let base = { left: 0, top: 0, width: 0, height: 0 };
     let current = { x: 0, y: 0 };
     let target = { x: 0, y: 0 };
+    let pointer = { x: 0, y: 0 };
+    let scroll = 0;
+    let scrollRange = 0;
     let frame = 0;
     let lastFrame = 0;
 
@@ -59,6 +73,9 @@ export function Mascot() {
       base = { left: rect.left, top: rect.top, width: rect.width, height: rect.height };
       current = { x: 0, y: 0 };
       target = { x: 0, y: 0 };
+      pointer = { x: 0, y: 0 };
+      scroll = 0;
+      scrollRange = Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
     }
 
     /** Keep the mascot fully inside the viewport, expressed as a delta from base. */
@@ -72,6 +89,30 @@ export function Mascot() {
         x: Math.min(Math.max(x, minX), Math.max(minX, maxX)),
         y: Math.min(Math.max(y, minY), Math.max(minY, maxY)),
       };
+    }
+
+    /**
+     * Scroll delta: one sine arc across the whole document, so it starts and ends
+     * at rest and can never accumulate into a drifting offset.
+     */
+    function scrollDelta() {
+      if (scrollRange <= 0) return 0;
+
+      const progress = Math.min(1, Math.max(0, window.scrollY / scrollRange));
+      const amplitude = finePointer.matches ? SCROLL_RISE : SCROLL_RISE_COARSE;
+
+      return -Math.sin(progress * Math.PI) * amplitude;
+    }
+
+    /** Cursor and scroll both feed one target, so neither fights the transform. */
+    function retarget() {
+      target = bounded(pointer.x, pointer.y + scroll);
+    }
+
+    function followScroll() {
+      scroll = scrollDelta();
+      retarget();
+      start();
     }
 
     function stop() {
@@ -113,22 +154,30 @@ export function Mascot() {
       // Touch coordinates are deliberately ignored: those devices drift instead.
       if (event.pointerType === "touch") return;
 
-      target = bounded(
+      pointer = bounded(
         event.clientX + CURSOR_GAP - base.left,
         event.clientY + CURSOR_GAP - base.top,
       );
+      retarget();
       start();
     }
 
     function applyMode() {
       stop();
       window.removeEventListener("pointermove", followPointer);
+      window.removeEventListener("scroll", followScroll);
 
       measure();
       paint();
 
       // Reduced motion: the mascot stays put at its resting position.
       if (reducedMotion.matches) return;
+
+      // Scroll is a delta from the resting position, eased by the same loop.
+      window.addEventListener("scroll", followScroll, { passive: true });
+      scroll = scrollDelta();
+      retarget();
+      if (scroll !== 0) start();
 
       // Coarse pointers get the independent CSS drift, so nothing is tracked.
       if (finePointer.matches) {
@@ -145,6 +194,7 @@ export function Mascot() {
     return () => {
       stop();
       window.removeEventListener("pointermove", followPointer);
+      window.removeEventListener("scroll", followScroll);
       window.removeEventListener("resize", applyMode);
       finePointer.removeEventListener("change", applyMode);
       reducedMotion.removeEventListener("change", applyMode);
