@@ -1,6 +1,7 @@
 import { About } from "@/components/sections/About";
 import { Experience } from "@/components/sections/Experience";
 import { Hero } from "@/components/sections/Hero";
+import { Projects } from "@/components/sections/Projects";
 import { SectionShell } from "@/components/sections/SectionShell";
 
 export default function Home() {
@@ -11,11 +12,7 @@ export default function Home() {
 
       <Experience />
 
-      <SectionShell id="projects" index="03" title="Projects" width="wide">
-        <p className="max-w-xl text-sm leading-7 text-fg-secondary sm:text-base">
-          Selected projects, their stack and outcomes will be documented here.
-        </p>
-      </SectionShell>
+      <Projects />
 
       <SectionShell id="personality" index="04" title="Personality" width="content">
         <p className="max-w-xl text-sm leading-7 text-fg-secondary sm:text-base">

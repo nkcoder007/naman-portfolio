@@ -87,6 +87,21 @@
   --syntax-pink: #9c1f5b;
 }
 
+/* Project dialog: entrance only — the resting state needs no fill mode, so the
+   panel stays visible even if the animation never runs. */
+@keyframes project-dialog-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.995);
+  }
+}
+
+@keyframes project-dialog-backdrop-in {
+  from {
+    opacity: 0;
+  }
+}
+
 @layer base {
   html {
     scroll-behavior: smooth;
