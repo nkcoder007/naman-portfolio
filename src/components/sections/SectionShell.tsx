@@ -43,7 +43,9 @@ export function SectionShell({
         .filter(Boolean)
         .join(" ")}
     >
-      <Container width={width} className="py-20 sm:py-24 lg:py-28">
+      {/* Only the transparent scenes settle on scroll; a solid scene already has
+          its fade and rise from the entrance reveal. */}
+      <Container width={width} className="py-20 sm:py-24 lg:py-28" scene={surface === "grid"}>
         <h2
           id={headingId}
           className={["font-mono text-2xl font-semibold tracking-tight text-fg sm:text-3xl", headingClassName]

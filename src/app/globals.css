@@ -250,6 +250,34 @@ html[data-reveal="pending"] [data-reveal-item],
   }
 }
 
+/* Scene transitions. The entrance reveal above already fades and lifts each
+   section's content, so this layer deliberately owns movement only: fading the
+   same text here as well would dim it twice, on two overlapping curves. That
+   leaves the one thing the reveal cannot do — a settle tied to the scroll
+   position — and it is kept only for the grid-backed scenes (Projects,
+   Contact), where the texture showing through gives the movement something to
+   read against. Solid scenes rely on the reveal alone.
+
+   A section's surface never moves — the opaque background stays exactly where
+   it is, so no boundary can flash — only its content block settles.
+   ScrollParallax writes `--scene-progress` (0 as the section enters, 1 once it
+   has arrived) from the page's single scroll loop. The fallback of 1 means a
+   visit without JavaScript sees every scene finished, and reduced motion skips
+   the block entirely. */
+@media (prefers-reduced-motion: no-preference) {
+  [data-scene-content] {
+    transform: translateY(calc(12px * (1 - var(--scene-progress, 1))));
+  }
+
+  /* Phones: shorter travel, so two half-settled scenes never overlap on a
+     small screen. */
+  @media (width < 40rem) {
+    [data-scene-content] {
+      transform: translateY(calc(8px * (1 - var(--scene-progress, 1))));
+    }
+  }
+}
+
 /* Touch devices: the mascot drifts on its own around its resting position.
    Desktop tracking is scripted (components/mascot/Mascot.tsx), because it has to
    follow the pointer; this closed loop is the only movement a coarse pointer

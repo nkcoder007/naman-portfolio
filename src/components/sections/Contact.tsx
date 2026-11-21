@@ -51,6 +51,7 @@ export function Contact() {
     >
       <Container
         width="wide"
+        scene
         className="flex flex-1 flex-col pt-16 pb-20 sm:pt-20 sm:pb-24 lg:pt-24 lg:pb-28"
       >
         {/* The scene is placed by its own top offset rather than centred on its

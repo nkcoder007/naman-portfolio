@@ -9,8 +9,17 @@ const GRID_FACTOR = 0.12;
 const MAX_OFFSET = 32;
 
 /**
- * Scroll-driven depth: the persistent grid lags the page slightly, and a few
- * marked elements drift a touch slower than it.
+ * How much of a scene's own entry is used to settle it, as a share of the
+ * shorter of its height and the viewport. Only the grid-backed scenes carry a
+ * scene settle: the solid ones already get their fade and rise from the
+ * entrance reveal, and a second opacity curve there would dim them twice.
+ */
+const SCENE_RANGE = 0.52;
+
+/**
+ * Scroll-driven depth: the persistent grid lags the page slightly, a few marked
+ * elements drift a touch slower than it, and each grid-backed scene settles as
+ * it enters. Opacity is never touched here — the entrance reveal owns it.
  *
  * One passive scroll listener and one animation frame for the whole page, all
  * writes done straight to style — no React state, no DOM queries during
@@ -32,11 +41,21 @@ export function ScrollParallax() {
       }),
     );
 
+    // Scene settle: the content block of each grid-backed section. Progress is
+    // derived from where the block sits, so it is continuous in both scroll
+    // directions and settles once the section has arrived.
+    const scenes = Array.from(document.querySelectorAll<HTMLElement>("[data-scene-content]"));
+
     let frame = 0;
 
     function update() {
       frame = 0;
       const y = window.scrollY;
+      const height = window.innerHeight;
+
+      // Every read happens before any write, so a frame never interleaves the
+      // two and force a layout mid-update.
+      const measured = scenes.map((element) => ({ element, rect: element.getBoundingClientRect() }));
 
       if (backdrop && gridTile > 0) {
         backdrop.style.backgroundPosition = `0 ${(y * GRID_FACTOR) % gridTile}px`;
@@ -45,6 +64,15 @@ export function ScrollParallax() {
       for (const { element, factor } of targets) {
         const offset = Math.max(-MAX_OFFSET, Math.min(MAX_OFFSET, y * factor));
         element.style.transform = `translate3d(0, ${offset}px, 0)`;
+      }
+
+      for (const { element, rect } of measured) {
+        const distance = Math.min(rect.height, height) * SCENE_RANGE;
+        const progress = distance > 0 ? Math.min(1, Math.max(0, (height - rect.top) / distance)) : 1;
+
+        // Ease-out: most of the settle happens early, so the text reaches a
+        // readable weight sooner and gives up the last few pixels gently.
+        element.style.setProperty("--scene-progress", (1 - (1 - progress) ** 2).toFixed(4));
       }
     }
 
@@ -58,6 +86,7 @@ export function ScrollParallax() {
       backdrop?.style.removeProperty("background-position");
 
       for (const { element } of targets) element.style.removeProperty("transform");
+      for (const element of scenes) element.style.removeProperty("--scene-progress");
     }
 
     function sync() {

@@ -39,7 +39,12 @@ export function Personality() {
   const closeEntry = useCallback(() => setActive(null), []);
 
   return (
-    <SectionShell id="personality" title="Personality" width="wide" surface="solid">
+    <SectionShell
+      id="personality"
+      title="Personality"
+      width="wide"
+      surface="solid"
+    >
       <div data-reveal-item data-reveal-step="0" className="mt-2">
         <div className={`grid gap-y-3 ${metaColumns}`}>
           <p className="font-mono text-[11px] tracking-[0.18em] text-fg-muted uppercase md:pt-1.5">
