@@ -304,10 +304,38 @@ html[data-reveal="pending"] [data-reveal-item],
   }
 }
 
-/* Reduced motion keeps the mascot, stationary, exactly where CSS places it. */
+/* The mascot's idle spin: one full clockwise turn, frame by frame. The
+   keyframes are a plain 0deg to 360deg arc, so the motion is always in one
+   direction and 360deg lands exactly back on 0deg — the next cycle continues
+   with no seam, pause or jump. `steps(45, end)` is what makes it stop-motion:
+   the arc is cut into 45 equal 8deg frames, each held for the whole of its
+   slice before snapping to the next, so there are no in-betweens. 8s per turn
+   puts a frame every ~178ms: quick enough to read as a spin, slow enough that
+   the individual frames still register.
+
+   Applied to its own wrapper between the artwork and the drift, so the follow
+   and drift translates are never touched, and a rotation cannot affect layout. */
+@keyframes mascot-rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.mascot-rotate {
+  animation: mascot-rotate 8s steps(45, end) infinite;
+  transform-origin: center;
+}
+
+/* Reduced motion keeps the mascot, stationary and upright, exactly where CSS
+   places it. */
 @media (prefers-reduced-motion: reduce) {
-  .mascot-drift {
+  .mascot-drift,
+  .mascot-rotate {
     animation: none !important;
+    transform: none !important;
   }
 }
 

@@ -206,10 +206,14 @@ export function Mascot() {
       {/* Resting position. On touch devices the inner wrapper drifts around it. */}
       <div
         ref={anchorRef}
-        className="absolute bottom-6 left-6 size-[4.75rem] opacity-90 will-change-transform sm:bottom-4 sm:left-6 sm:size-20 lg:bottom-10 lg:left-10 lg:size-32"
+        className="absolute bottom-6 left-6 size-[3.5625rem] opacity-90 will-change-transform sm:bottom-4 sm:left-6 sm:size-[3.75rem] lg:bottom-10 lg:left-10 lg:size-24"
       >
         <div className="mascot-drift size-full">
-          <MascotArt />
+          {/* Rotation only. It is a sibling of every translate above, so the
+              stepped turn never touches the follow or drift transforms. */}
+          <div className="mascot-rotate size-full">
+            <MascotArt />
+          </div>
         </div>
       </div>
     </div>
